@@ -2,10 +2,12 @@ cask "agent07" do
   version "1.0.0"
   sha256 "3472333cd221f64a05fbe74e1d3ea1cc7656ae6fa073844b2e67f5af1f568bc3"
 
-  url "https://github.com/ArtemKyslicyn/Agent07/releases/download/v#{version}/Agent07-#{version}.zip"
+  # Pre-built binary is hosted on THIS public tap's own Releases, so `brew
+  # install` needs no token even though the app's source repo is private.
+  url "https://github.com/ArtemKyslicyn/homebrew-agent07/releases/download/v#{version}/Agent07-#{version}.zip"
   name "Agent07"
   desc "Local AI Agent Orchestrator — DAG pipelines with GGUF models + OpenRouter"
-  homepage "https://github.com/ArtemKyslicyn/Agent07"
+  homepage "https://github.com/ArtemKyslicyn/homebrew-agent07"
 
   depends_on macos: ">= :sonoma"
   depends_on arch: :arm64
