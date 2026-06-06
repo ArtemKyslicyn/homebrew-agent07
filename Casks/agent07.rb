@@ -9,13 +9,18 @@ cask "agent07" do
   desc "Local AI Agent Orchestrator — DAG pipelines with GGUF models + OpenRouter"
   homepage "https://github.com/ArtemKyslicyn/homebrew-agent07"
 
-  # Alpha is ad-hoc signed (no Developer ID / notarization yet), so Gatekeeper
-  # quarantines it. `quarantine false` lets brew strip the attribute on install
-  # — without it the app launches with a "damaged" error.
+  livecheck do
+    url :url
+    strategy :github_releases
+  end
+
+  # Alpha is ad-hoc signed (no Developer ID / notarization yet). Homebrew can't
+  # disable quarantine, so the app is quarantined on install — the caveats below
+  # tell the user how to clear it (xattr / right-click Open).
   depends_on macos: :sequoia
   depends_on arch: :arm64
 
-  app "Agent07.app", quarantine: false
+  app "Agent07.app"
 
   zap trash: [
     "~/Library/Application Support/Agent07",
