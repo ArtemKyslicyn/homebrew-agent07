@@ -12,7 +12,7 @@ cask "agent07" do
   # Alpha is ad-hoc signed (no Developer ID / notarization yet), so Gatekeeper
   # quarantines it. `quarantine false` lets brew strip the attribute on install
   # — without it the app launches with a "damaged" error.
-  depends_on macos: ">= :sequoia"
+  depends_on macos: :sequoia
   depends_on arch: :arm64
 
   app "Agent07.app", quarantine: false
