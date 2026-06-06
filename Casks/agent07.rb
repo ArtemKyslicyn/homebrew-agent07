@@ -1,6 +1,6 @@
 cask "agent07" do
-  version "1.0.0"
-  sha256 "3472333cd221f64a05fbe74e1d3ea1cc7656ae6fa073844b2e67f5af1f568bc3"
+  version "0.9.0-alpha.1"
+  sha256 "0ed4ee6ddd850a0601eb385d91edb06de51fd729df042fe6272cf49773d6381c"
 
   # Pre-built binary is hosted on THIS public tap's own Releases, so `brew
   # install` needs no token even though the app's source repo is private.
@@ -9,31 +9,40 @@ cask "agent07" do
   desc "Local AI Agent Orchestrator — DAG pipelines with GGUF models + OpenRouter"
   homepage "https://github.com/ArtemKyslicyn/homebrew-agent07"
 
-  depends_on macos: ">= :sonoma"
+  # Alpha is ad-hoc signed (no Developer ID / notarization yet), so Gatekeeper
+  # quarantines it. `quarantine false` lets brew strip the attribute on install
+  # — without it the app launches with a "damaged" error.
+  depends_on macos: ">= :sequoia"
   depends_on arch: :arm64
 
-  app "Agent07.app"
+  app "Agent07.app", quarantine: false
 
   zap trash: [
     "~/Library/Application Support/Agent07",
     "~/Library/Caches/Agent07",
-    "~/Library/Preferences/app.ddd.Agent07.plist",
+    "~/Library/Preferences/app.ddd.Agent07Community.plist",
   ]
 
   caveats <<~EOS
-    Agent07 requires Apple Silicon (M1+) and macOS 14+.
+    Agent07 #{version} — early ALPHA. Apple Silicon (M1+) and macOS 15.2+ required.
 
-    Features:
+    This alpha is ad-hoc signed (not notarized). If macOS refuses to open it:
+      xattr -dr com.apple.quarantine "/Applications/Agent07.app"
+    or right-click the app → Open → Open.
+
+    Included in this build:
     - Local GGUF model inference (LLM.swift)
     - OpenRouter free cloud models (no payment needed)
     - DAG-based agent pipeline editor
     - 20+ code tools (Read, Edit, Bash, Grep, Glob...)
     - MCP server support
-    - VS Code extension hosting
+
+    NOT in this alpha (work in progress): image generation (Flux),
+    image gallery, the Sirin avatar, and the Kanban board.
 
     First run:
     1. Download a model: Settings → Downloaded Models → Qwen3 0.6B
-    2. Or setup free cloud: Settings → Free Mode → OpenRouter
+    2. Or set up free cloud: Settings → Free Mode → OpenRouter
 
     For local inference, download models to ~/Documents/
   EOS
